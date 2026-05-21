@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maira Memon | Frontend Developer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 100%);
+      color: #e2e8f0;
+      scroll-behavior: smooth;
+      line-height: 1.5;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    :root {
+      --primary: #f472b6;
+      --primary-dark: #ec4899;
+      --primary-light: #fce7f3;
+      --secondary: #f9a8d4;
+      --accent: #fbcfe8;
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.75);
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-glow: rgba(244, 114, 182, 0.3);
+    }
+
+    body.light-mode {
+      --bg-dark: #fff5f8;
+      --bg-card: rgba(255, 245, 248, 0.95);
+      --text-light: #831843;
+      --text-muted: #9d174d;
+      --border-glow: rgba(244, 114, 182, 0.4);
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+      color: #831843;
+    }
+
+    body.light-mode .card,
+    body.light-mode .stat-card,
+    body.light-mode .testimonial-card,
+    body.light-mode .blog-card,
+    body.light-mode .cert-card,
+    body.light-mode .contact-info {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 20px rgba(244, 114, 182, 0.1);
+    }
+
+    body.light-mode .header { background: rgba(255, 245, 248, 0.9); }
+
+    body.light-mode input,
+    body.light-mode textarea {
+      background: #ffffff;
+      border-color: #fbcfe8;
+      color: #831843;
+    }
+
+    /* Page Transition */
+    .page-transition {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--primary); z-index: 9999; transform: scaleY(0);
+      transform-origin: top; transition: transform 0.5s ease; pointer-events: none;
+    }
+    .page-transition.active { transform: scaleY(1); }
+
+    /* Particles Canvas */
+    #particles-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    .header, section, footer, .theme-toggle, .whatsapp-btn, .back-to-top, .floating-socials, .chatbot {
+      position: relative; z-index: 2;
+    }
+
+    /* Scroll Progress */
+    .progress-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 4px;
+      background: transparent; z-index: 1001;
+    }
+    .progress-bar-scroll {
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      width: 0%; transition: width 0.2s;
+    }
+
+    /* Header */
+    .header {
+      position: fixed; width: 100%; top: 0;
+      background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem 5%; z-index: 1000; border-bottom: 1px solid var(--border-glow);
+    }
+    .logo {
+      font-size: 1.6rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .nav-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-weight: 500;
+      transition: 0.3s; font-size: 0.95rem;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .menu-icon { display: none; font-size: 1.8rem; cursor: pointer; color: var(--text-light); }
+
+    /* Home Section */
+    .home {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 1.5rem 3rem;
+    }
+    .content h1 { font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 700; margin-bottom: 1rem; }
+    #typing { color: var(--primary-dark); border-bottom: 3px solid var(--primary); display: inline-block; min-height: 1.2em; }
+    .typing-bio { color: var(--primary); font-size: 1rem; margin-bottom: 0.5rem; min-height: 1.4em; display: block; }
+    .button-group { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    button, .resume-btn, .print-pdf-btn {
+      padding: 0.8rem 1.8rem; font-size: 0.95rem; font-weight: 600;
+      border: none; border-radius: 40px; cursor: pointer; transition: 0.3s;
+      background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
+      text-decoration: none; display: inline-block;
+    }
+    .resume-btn { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .print-pdf-btn { background: transparent; border: 2px solid var(--secondary); color: var(--secondary); }
+    button:hover, .resume-btn:hover, .print-pdf-btn:hover { transform: translateY(-3px); filter: brightness(1.05); }
+
+    /* Stats */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem; margin: 3rem 1.5rem; text-align: center;
+    }
+    .stat-card {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      padding: 1.2rem; border-radius: 24px; border: 1px solid var(--border-glow);
+    }
+    .stat-number { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--primary); }
+
+    /* Sections */
+    .projects, .skills, .certifications, .testimonials, .blog-section, .contact {
+      padding: 3rem 1.5rem;
+    }
+    h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); margin-bottom: 1.5rem; text-align: center; }
+
+    .filter-section, .search-section {
+      display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2rem;
+    }
+    .filter-btn {
+      background: transparent; border: 1px solid var(--border-glow);
+      color: var(--text-muted); padding: 0.4rem 1rem; font-size: 0.85rem;
+      border-radius: 30px; cursor: pointer; transition: 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+    }
+    .search-section input {
+      width: 280px; padding: 0.7rem 1.2rem; border-radius: 40px;
+      background: var(--bg-dark); border: 1px solid var(--border-glow);
+      color: var(--text-light); font-size: 0.9rem;
+    }
+
+    .project-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      padding: 1.2rem; border-radius: 20px; border: 1px solid var(--border-glow);
+      transition: 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+    .project-image { width: 100%; height: 160px; object-fit: cover; border-radius: 14px; margin-bottom: 1rem; }
+    .tech-tags span {
+      background: rgba(244,114,182,0.2); padding: 0.2rem 0.6rem;
+      border-radius: 20px; font-size: 0.7rem; color: var(--primary);
+      display: inline-block; margin: 2px;
+    }
+    .share-buttons { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+    .share-buttons a { color: var(--text-muted); transition: 0.2s; font-size: 1rem; cursor: pointer; }
+    .share-buttons a:hover { color: var(--primary); }
+
+    /* Testimonial Slider */
+    .testimonial-slider {
+      position: relative; max-width: 700px; margin: 0 auto; overflow: hidden;
+    }
+    .testimonial-track { display: flex; transition: transform 0.5s ease; }
+    .testimonial-card {
+      min-width: 100%; background: var(--bg-card); padding: 1.5rem;
+      border-radius: 28px; text-align: center; border: 1px solid var(--border-glow);
+    }
+    .stars { color: #fbbf24; margin-top: 0.5rem; font-size: 0.9rem; }
+    .slider-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: var(--primary); border: none; width: 35px; height: 35px;
+      border-radius: 50%; cursor: pointer; color: white; font-size: 1rem; z-index: 10;
+    }
+    .slider-btn.prev { left: 0px; }
+    .slider-btn.next { right: 0px; }
+
+    /* Blog */
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .blog-card {
+      background: var(--bg-card); border-radius: 20px; padding: 1.2rem;
+      border: 1px solid var(--border-glow); transition: 0.3s;
+    }
+    .blog-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+    .blog-card h3 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .blog-card small { color: var(--text-muted); }
+
+    /* Skills */
+    .skill-box { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    .skill { width: 240px; text-align: center; }
+    .progress-bar {
+      background: rgba(255,255,255,0.15); border-radius: 40px;
+      height: 10px; overflow: hidden; margin-top: 0.5rem;
+    }
+    .progress {
+      height: 100%; border-radius: 40px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      width: 0%; transition: width 1.2s ease-out;
+    }
+
+    /* Certifications */
+    .cert-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .cert-card {
+      background: var(--bg-card); padding: 1.2rem; border-radius: 18px;
+      text-align: center; border: 1px solid var(--border-glow); transition: 0.3s;
+    }
+    .cert-card:hover { border-color: var(--primary); }
+    .cert-card i { font-size: 2rem; color: var(--primary); margin-bottom: 0.8rem; display: block; }
+
+    /* Contact */
+    .contact-wrapper { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    form { flex: 1; min-width: 260px; display: flex; flex-direction: column; gap: 1rem; }
+    input, textarea {
+      background: var(--bg-dark); border: 1px solid var(--border-glow);
+      padding: 0.8rem; border-radius: 14px; color: var(--text-light);
+      font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); }
+    .contact-info {
+      flex: 1; min-width: 240px; background: var(--bg-card);
+      padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-glow);
+    }
+    .contact-info p {
+      margin: 0.8rem 0; display: flex; align-items: center;
+      gap: 0.8rem; flex-wrap: wrap; color: var(--text-muted);
+    }
+    .contact-info i { color: var(--primary); width: 24px; }
+
+    /* Chatbot */
+    .chatbot {
+      position: fixed; bottom: 6rem; right: 1rem; width: 320px;
+      background: var(--bg-card); backdrop-filter: blur(12px); border-radius: 24px;
+      z-index: 1000; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-glow); transition: all 0.3s ease;
+    }
+    .chatbot-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 0.9rem 1rem; border-radius: 24px 24px 0 0;
+      font-weight: bold; cursor: pointer; display: flex; justify-content: space-between;
+      color: white; align-items: center;
+    }
+    .chatbot-body {
+      display: flex; flex-direction: column;
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    }
+    .chatbot.open .chatbot-body { max-height: 380px; }
+    .chat-messages-area {
+      padding: 0.8rem; height: 280px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .bot-message, .user-message {
+      max-width: 85%; padding: 0.6rem 0.9rem;
+      border-radius: 18px; font-size: 0.85rem; line-height: 1.4;
+    }
+    .bot-message {
+      background: rgba(244,114,182,0.2); align-self: flex-start;
+      border-bottom-left-radius: 5px; color: var(--text-light);
+    }
+    .user-message {
+      background: var(--primary); align-self: flex-end;
+      border-bottom-right-radius: 5px; color: white;
+    }
+    .chat-input-area {
+      display: flex; gap: 0.5rem; padding: 0.8rem;
+      border-top: 1px solid var(--border-glow); background: rgba(0,0,0,0.2);
+    }
+    .chat-input-area input {
+      flex: 1; padding: 0.6rem 1rem; border-radius: 30px; border: none;
+      background: var(--bg-dark); color: var(--text-light); font-size: 0.85rem; outline: none;
+    }
+    .chat-input-area button {
+      padding: 0.5rem 1rem; margin: 0; background: var(--primary);
+      color: white; border-radius: 30px; font-size: 0.8rem;
+    }
+
+    /* Floating Socials */
+    .floating-socials {
+      position: fixed; left: 1rem; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 0.8rem; z-index: 100;
+    }
+    .floating-socials a {
+      background: var(--bg-card); width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; color: var(--primary); font-size: 1.2rem;
+      transition: 0.2s; backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glow); cursor: pointer; text-decoration: none;
+    }
+    .floating-socials a:hover { transform: scale(1.1); background: var(--primary); color: white; }
+
+    /* Modal */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: var(--bg-card); width: 90%; max-width: 900px;
+      border-radius: 24px; overflow: hidden;
+    }
+    iframe { width: 100%; height: 60vh; border: none; }
+
+    /* Footer */
+    .advanced-footer {
+      background: #0a0f1a; padding: 2rem 1.5rem 1rem;
+      margin-top: 2rem; border-top: 1px solid var(--border-glow);
+    }
+    body.light-mode .advanced-footer { background: #ffe4ec; }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .footer-col h4 { color: var(--primary); margin-bottom: 0.8rem; font-size: 1rem; }
+    .footer-col a {
+      display: block; color: var(--text-muted); text-decoration: none;
+      margin-bottom: 0.4rem; font-size: 0.85rem;
+    }
+    .footer-col a:hover { color: var(--primary); }
+    .newsletter-input { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+    .newsletter-input input {
+      padding: 0.6rem; border-radius: 30px; border: none; flex: 1;
+      background: #1e293b; color: white; font-family: 'Inter', sans-serif;
+    }
+    .newsletter-input button { padding: 0.6rem 1rem; margin: 0; font-size: 0.8rem; }
+    .footer-bottom {
+      text-align: center; padding-top: 1rem;
+      border-top: 1px solid var(--border-glow); font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    /* Buttons fixed */
+    .whatsapp-btn {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; background: #25D366;
+      width: 50px; height: 50px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; color: white;
+      font-size: 1.6rem; text-decoration: none; z-index: 999;
+    }
+    .back-to-top {
+      position: fixed; bottom: 1.5rem; right: 5rem; background: var(--primary);
+      padding: 0 0.8rem; height: 40px; border-radius: 40px; display: none;
+      align-items: center; gap: 5px; cursor: pointer; z-index: 999;
+      color: white; border: none; font-size: 0.85rem;
+    }
+    .theme-toggle {
+      position: fixed; bottom: 1.5rem; left: 1.5rem; background: var(--primary);
+      width: 45px; height: 45px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+      border: none; font-size: 1.2rem; z-index: 999; color: white;
+    }
+    .load-more-container { text-align: center; margin-top: 2rem; }
+
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-icon { display: block; }
+      .nav-links {
+        display: none; flex-direction: column; background: var(--bg-card);
+        position: absolute; top: 60px; right: 0; width: 100%;
+        text-align: center; padding: 1rem 0; backdrop-filter: blur(12px);
+        gap: 0.8rem; z-index: 999;
+      }
+      .nav-links.show { display: flex; }
+      .floating-socials { left: 0.4rem; }
+      .floating-socials a { width: 35px; height: 35px; font-size: 1rem; }
+      .chatbot { width: 285px; right: 0.5rem; bottom: 5rem; }
+      .back-to-top { right: 1rem; bottom: 5rem; }
+      .theme-toggle { left: 1rem; bottom: 1rem; width: 40px; height: 40px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-transition" id="pageTransition"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-container"><div class="progress-bar-scroll" id="scrollProgress"></div></div>
+
+<button class="theme-toggle" id="themeToggle">🌙</button>
+<a href="https://wa.me/923123277108" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i></a>
+<button id="backToTop" class="back-to-top">↑ Back</button>
+
+<div class="floating-socials">
+  <a onclick="shareOnLinkedIn()" title="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <a onclick="shareOnTwitter()" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+  <a onclick="shareOnWhatsApp()" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<!-- AI CHATBOT -->
+<div id="chatbot" class="chatbot">
+  <div class="chatbot-header" onclick="toggleChatbot()">
+    <span><i class="fas fa-robot"></i> Pink AI Assistant</span>
+    <span>💬</span>
+  </div>
+  <div class="chatbot-body">
+    <div class="chat-messages-area" id="chatMessagesArea">
+      <div class="bot-message">🌸 Hi! I'm Maira's AI assistant. Ask me about skills, projects, pricing, or hiring!</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatUserInput" placeholder="Type your question..." autocomplete="off">
+      <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <h2 class="logo">Maira.</h2>
+  <div class="menu-icon" id="menuIcon">☰</div>
+  <nav class="nav-links" id="navLinks">
+    <a href="#home">Home</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HOME -->
+<section id="home" class="home">
+  <div class="content">
+    <h1>I am <span id="typing"></span></h1>
+    <span class="typing-bio" id="typing-bio"></span>
+    <p>Creating modern, responsive, and user-friendly websites with AI magic 💖</p>
+    <div class="button-group">
+      <button onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Work →</button>
+      <a href="#" class="resume-btn" id="viewResumeBtn">📄 View Resume</a>
+      <button class="print-pdf-btn" id="downloadPortfolioPDF">📑 Save as PDF</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-card reveal"><h3 class="stat-number" data-target="20">0</h3><p>Projects Done</p></div>
+    <div class="stat-card reveal"><h3 class="stat-number" data-target="15">0</h3><p>Happy Clients</p></div>
+    <div class="stat-card reveal"><h3 class="stat-number" data-target="3">0</h3><p>Years Exp</p></div>
+    <div class="stat-card reveal"><h3 class="stat-number" data-target="8">0</h3><p>Certifications</p></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects">
+  <h2>✨ Featured Projects</h2>
+  <div class="search-section">
+    <input type="text" id="projectSearch" placeholder="🔍 Search projects...">
+  </div>
+  <div class="filter-section">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+    <button class="filter-btn" data-filter="restaurant">Restaurant</button>
+    <button class="filter-btn" data-filter="fashion">Fashion</button>
+    <button class="filter-btn" data-filter="beauty">Beauty</button>
+    <button class="filter-btn" data-filter="app">Apps</button>
+  </div>
+  <div id="projectsGrid" class="project-grid">
+    <div class="card reveal" data-category="ecommerce">
+      <img class="project-image" src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&h=400&fit=crop" alt="Abaya Wardrobe Project">
+      <h3>ABAYA WARDROBE</h3>
+      <p>Premium Islamic fashion e-commerce.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Abaya Wardrobe')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a onclick="shareOnLinkedInProject('Abaya Wardrobe')" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="restaurant">
+      <img class="project-image" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop" alt="Elegance Bites Project">
+      <h3>ELEGANCE BITES</h3>
+      <p>Modern restaurant website.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Elegance Bites')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="fashion">
+      <img class="project-image" src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=400&fit=crop" alt="Fable and Thread Project">
+      <h3>FABLE & THREAD</h3>
+      <p>Fashion clothing website.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Fable & Thread')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="beauty">
+      <img class="project-image" src="https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=600&h=400&fit=crop" alt="Pink Parlour Project">
+      <h3>PINK PARLOUR</h3>
+      <p>Beauty salon website.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Pink Parlour')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="ecommerce" style="display:none;">
+      <img class="project-image" src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&h=400&fit=crop" alt="Luxe Store Project">
+      <h3>LUXE STORE</h3>
+      <p>Luxury goods e-commerce platform.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Luxe Store')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="restaurant" style="display:none;">
+      <img class="project-image" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop" alt="Bistro Bliss Project">
+      <h3>BISTRO BLISS</h3>
+      <p>Fine dining restaurant experience.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Bistro Bliss')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="app">
+      <img class="project-image" src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=600&h=400&fit=crop" alt="Brain Dump Note App">
+      <h3>BRAIN DUMP</h3>
+      <p>A smart note-taking app to capture your ideas instantly. Organize, edit and manage your thoughts with a clean modern interface.</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span><span>React</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Brain Dump')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a onclick="shareOnLinkedInProject('Brain Dump')" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" data-category="app">
+      <img class="project-image" src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=600&h=400&fit=crop" alt="Quizzy Quiz App">
+      <h3>QUIZZY</h3>
+      <p>An interactive quiz app with multiple categories, score tracking and fun animations. Test your knowledge and challenge friends!</p>
+      <div class="tech-tags"><span>HTML</span><span>CSS</span><span>JS</span><span>React</span></div>
+      <div class="share-buttons">
+        <a onclick="shareProject('Quizzy')" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a onclick="shareOnLinkedInProject('Quizzy')" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="load-more-container">
+    <button id="loadMoreBtn">✨ Load More Projects</button>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testimonials">
+  <h2>💬 Client Love</h2>
+  <div class="testimonial-slider">
+    <div class="testimonial-track" id="testimonialTrack">
+      <div class="testimonial-card">
+        <p>"Amazing work with AI chatbot! Very professional."</p>
+        <div class="stars">★★★★★</div><h4>- Sarah Ahmed</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Creative frontend developer, highly recommend!"</p>
+        <div class="stars">★★★★★</div><h4>- Omer Riaz</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Best experience, website looks stunning!"</p>
+        <div class="stars">★★★★☆</div><h4>- Fatima Khan</h4>
+      </div>
+    </div>
+    <button class="slider-btn prev" onclick="prevTestimonial()">❮</button>
+    <button class="slider-btn next" onclick="nextTestimonial()">❯</button>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="blog-section">
+  <h2>📝 Tech Articles</h2>
+  <div class="blog-grid">
+    <div class="blog-card reveal">
+      <h3>CSS Grid vs Flexbox</h3>
+      <p>Modern layout techniques for responsive design.</p>
+      <small>Jan 2025</small>
+    </div>
+    <div class="blog-card reveal">
+      <h3>JavaScript Performance Tips</h3>
+      <p>Optimize your web apps for speed.</p>
+      <small>Feb 2025</small>
+    </div>
+    <div class="blog-card reveal">
+      <h3>Getting Started with React</h3>
+      <p>Components, hooks and best practices.</p>
+      <small>Mar 2025</small>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills">
+  <h2>⚡ My Skills</h2>
+  <div class="skill-box">
+    <div class="skill reveal">
+      <p><i class="fab fa-html5"></i> HTML5</p>
+      <div class="progress-bar"><div class="progress" data-width="90"></div></div>
+    </div>
+    <div class="skill reveal">
+      <p><i class="fab fa-css3-alt"></i> CSS3</p>
+      <div class="progress-bar"><div class="progress" data-width="85"></div></div>
+    </div>
+    <div class="skill reveal">
+      <p><i class="fab fa-js"></i> JavaScript</p>
+      <div class="progress-bar"><div class="progress" data-width="80"></div></div>
+    </div>
+    <div class="skill reveal">
+      <p><i class="fab fa-react"></i> React</p>
+      <div class="progress-bar"><div class="progress" data-width="75"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="certifications">
+  <h2>📜 Certifications</h2>
+  <div class="cert-grid">
+    <div class="cert-card reveal"><i class="fas fa-certificate"></i><h3>Frontend Development</h3><p>Meta - Coursera</p></div>
+    <div class="cert-card reveal"><i class="fab fa-js"></i><h3>JavaScript Advanced</h3><p>freeCodeCamp</p></div>
+    <div class="cert-card reveal"><i class="fab fa-react"></i><h3>React Basics</h3><p>Meta - Coursera</p></div>
+    <div class="cert-card reveal"><i class="fas fa-mobile-alt"></i><h3>Responsive Design</h3><p>Google</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <h2>📬 Contact Me</h2>
+  <div class="contact-wrapper">
+    <form id="contactForm">
+      <input type="hidden" name="access_key" value="a286b04c-98ea-4512-9010-d19d5fc3a39a">
+      <input type="hidden" name="subject" value="New Message from Portfolio Contact Form">
+      <input type="hidden" name="from_name" value="Maira Portfolio">
+      <input type="text" id="contactName" name="name" placeholder="Your Name" required>
+      <input type="email" id="contactEmail" name="email" placeholder="Your Email" required>
+      <textarea id="contactMessage" name="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit" id="submitBtn">Send Message 💌</button>
+    </form>
+    <div class="contact-info">
+      <p><i class="fas fa-envelope"></i> memonmaira15@gmail.com</p>
+      <p><i class="fas fa-map-marker-alt"></i> Karachi, Pakistan</p>
+      <p><i class="fas fa-phone"></i> +92 3123277108</p>
+      <br>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Available for freelance projects. Let's build something amazing together! 💖</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="advanced-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Maira Memon</h4>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Frontend Developer with AI chatbot integration. Building beautiful web experiences.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Stay updated with latest projects.</p>
+      <div class="newsletter-input">
+        <input type="email" id="newsEmail" placeholder="Your email">
+        <button onclick="subscribeNews()">Subscribe</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <span id="currentYear"></span> MAIRA MEMON | Built with 💖 AI Chatbot Edition</p>
+  </div>
+</footer>
+
+<!-- RESUME MODAL -->
+<div id="resumeModal" class="modal">
+  <div class="modal-content">
+    <iframe id="resumeFrame" title="Resume"></iframe>
+    <button onclick="closeResumeModal()" style="margin:1rem; padding:0.5rem 1.5rem;">Close ✕</button>
+  </div>
+</div>
+
+<script>
+  // ===== TYPING ANIMATION (FIXED) =====
+  const nameTexts = ["Maira Memon", "a Web Developer", "a UI Designer", "a Creative Coder"];
+  const bioTexts = [
+    "Frontend Expert | UI Designer | Creative Coder",
+    "Building modern & responsive websites 💖",
+    "Bringing designs to life with code ✨",
+    "Available for freelance projects 🌸"
+  ];
+  let nameIdx = 0, bioIdx = 0, nameCharIdx = 0, bioCharIdx = 0;
+  let nameForward = true, bioForward = true;
+
+  function typeNameAnim() {
+    const el = document.getElementById('typing');
+    if (!el) return;
+    const current = nameTexts[nameIdx];
+    if (nameForward) {
+      nameCharIdx++;
+      el.textContent = current.slice(0, nameCharIdx);
+      if (nameCharIdx >= current.length) {
+        nameForward = false;
+        setTimeout(typeNameAnim, 1500);
+        return;
+      }
+    } else {
+      nameCharIdx--;
+      el.textContent = current.slice(0, nameCharIdx);
+      if (nameCharIdx <= 0) {
+        nameForward = true;
+        nameIdx = (nameIdx + 1) % nameTexts.length;
+      }
+    }
+    setTimeout(typeNameAnim, nameForward ? 100 : 55);
+  }
+
+  function typeBioAnim() {
+    const el = document.getElementById('typing-bio');
+    if (!el) return;
+    const current = bioTexts[bioIdx];
+    if (bioForward) {
+      bioCharIdx++;
+      el.textContent = current.slice(0, bioCharIdx);
+      if (bioCharIdx >= current.length) {
+        bioForward = false;
+        setTimeout(typeBioAnim, 2000);
+        return;
+      }
+    } else {
+      bioCharIdx--;
+      el.textContent = current.slice(0, bioCharIdx);
+      if (bioCharIdx <= 0) {
+        bioForward = true;
+        bioIdx = (bioIdx + 1) % bioTexts.length;
+      }
+    }
+    setTimeout(typeBioAnim, bioForward ? 80 : 40);
+  }
+
+  typeNameAnim();
+  setTimeout(typeBioAnim, 600);
+
+  // ===== STATS COUNTER =====
+  const statNumbers = document.querySelectorAll('.stat-number');
+  const observerStats = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        let count = 0;
+        const upd = setInterval(() => {
+          if (count >= target) { clearInterval(upd); el.textContent = target + '+'; }
+          else { count++; el.textContent = count; }
+        }, 60);
+        observerStats.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  statNumbers.forEach(n => observerStats.observe(n));
+
+  // ===== SCROLL REVEAL =====
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ===== TESTIMONIAL SLIDER =====
+  let currentIndex = 0;
+  const track = document.getElementById('testimonialTrack');
+  const slides = document.querySelectorAll('.testimonial-card');
+
+  function updateSlider() { track.style.transform = `translateX(-${currentIndex * 100}%)`; }
+  function nextTestimonial() { currentIndex = (currentIndex + 1) % slides.length; updateSlider(); }
+  function prevTestimonial() { currentIndex = (currentIndex - 1 + slides.length) % slides.length; updateSlider(); }
+
+  // Auto slide testimonials
+  setInterval(nextTestimonial, 4000);
+
+  // ===== PROJECT FILTER & SEARCH (FIXED) =====
+  let currentFilter = 'all';
+  let currentSearch = '';
+  let allCardsVisible = false;
+
+  const allCards = Array.from(document.querySelectorAll('#projectsGrid .card'));
+
+  function filterProjects() {
+    let visibleCount = 0;
+    allCards.forEach((card, index) => {
+      const cat = card.dataset.category;
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      const matchFilter = (currentFilter === 'all' || cat === currentFilter);
+      const matchSearch = title.includes(currentSearch);
+
+      if (matchFilter && matchSearch) {
+        if (allCardsVisible || visibleCount < 4) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Show/hide Load More button
+    const totalMatch = allCards.filter(card => {
+      const cat = card.dataset.category;
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      return (currentFilter === 'all' || cat === currentFilter) && title.includes(currentSearch);
+    }).length;
+
+    document.getElementById('loadMoreBtn').style.display =
+      (totalMatch > 4 && !allCardsVisible) ? 'inline-block' : 'none';
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      allCardsVisible = false;
+      filterProjects();
+    });
+  });
+
+  document.getElementById('projectSearch').addEventListener('input', e => {
+    currentSearch = e.target.value.toLowerCase();
+    allCardsVisible = false;
+    filterProjects();
+  });
+
+  document.getElementById('loadMoreBtn').addEventListener('click', () => {
+    allCardsVisible = true;
+    filterProjects();
+  });
+
+  filterProjects();
+
+  // ===== PROGRESS BARS =====
+  const pBars = document.querySelectorAll('.progress');
+  const skillsObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const w = entry.target.getAttribute('data-width');
+        entry.target.style.width = w + '%';
+        skillsObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  pBars.forEach(b => skillsObs.observe(b));
+
+  // ===== AI CHATBOT =====
+  function toggleChatbot() {
+    document.getElementById('chatbot').classList.toggle('open');
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById('chatUserInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    const messagesArea = document.getElementById('chatMessagesArea');
+
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user-message';
+    userDiv.textContent = message;
+    messagesArea.appendChild(userDiv);
+
+    const msgLower = message.toLowerCase();
+    let reply = '';
+
+    if (msgLower.includes('skill')) {
+      reply = '🌸 Maira\'s skills: HTML5 (90%), CSS3 (85%), JavaScript (80%), React (75%), and responsive design!';
+    } else if (msgLower.includes('hire') || msgLower.includes('available') || msgLower.includes('freelance')) {
+      reply = '💖 Yes! Maira is available for freelance work. Contact via WhatsApp (+923123277108) or email memonmaira15@gmail.com';
+    } else if (msgLower.includes('project')) {
+      reply = '✨ Projects: Abaya Wardrobe (E-commerce), Elegance Bites (Restaurant), Fable & Thread (Fashion), Pink Parlour (Beauty)!';
+    } else if (msgLower.includes('price') || msgLower.includes('cost') || msgLower.includes('rate') || msgLower.includes('charge')) {
+      reply = '💰 Pricing depends on project scope. Please contact directly via WhatsApp or email for a custom quote!';
+    } else if (msgLower.includes('contact') || msgLower.includes('email') || msgLower.includes('reach')) {
+      reply = '📧 Email: memonmaira15@gmail.com | WhatsApp: +92 3123277108 | Karachi, Pakistan';
+    } else if (msgLower.includes('hello') || msgLower.includes('hi') || msgLower.includes('hey') || msgLower.includes('salam') || msgLower.includes('assalam')) {
+      reply = '👋 Hello! How can I assist you with Maira\'s portfolio today? Ask about skills, projects, or hiring!';
+    } else if (msgLower.includes('thank')) {
+      reply = '💕 You\'re very welcome! Let me know if you need anything else.';
+    } else if (msgLower.includes('experience') || msgLower.includes('exp')) {
+      reply = '🎯 Maira has 3+ years of experience in frontend development, UI design, and building interactive websites!';
+    } else if (msgLower.includes('cert')) {
+      reply = '📜 Certifications: Frontend Dev (Meta/Coursera), JavaScript Advanced (freeCodeCamp), React Basics (Meta), Responsive Design (Google)!';
+    } else {
+      reply = '🌸 I\'m here to help! Ask me about Maira\'s skills, projects, pricing, or how to hire her.';
+    }
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'bot-message';
+    typingDiv.textContent = '...';
+    messagesArea.appendChild(typingDiv);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+
+    setTimeout(() => {
+      typingDiv.textContent = reply;
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+    }, 600);
+
+    input.value = '';
+  }
+
+  document.getElementById('chatUserInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendChatMessage();
+  });
+
+  // ===== THEME TOGGLE =====
+  const themeBtn = document.getElementById('themeToggle');
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+    themeBtn.textContent = '☀️';
+  }
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    themeBtn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+
+  // ===== PARTICLES =====
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+  function createParticles() {
+    particles = [];
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: (Math.random() - 0.5) * 0.5,
+        color: `rgba(244,114,182,${Math.random() * 0.4})`
+      });
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      p.x += p.speedX;
+      p.y += p.speedY;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+
+  window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+  resizeCanvas(); createParticles(); drawParticles();
+
+  // ===== SCROLL & UI =====
+  window.addEventListener('scroll', () => {
+    const ws = document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('scrollProgress').style.width = (ws / h * 100) + '%';
+    const backBtn = document.getElementById('backToTop');
+    backBtn.style.display = ws > 500 ? 'flex' : 'none';
+  });
+
+  document.getElementById('backToTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('menuIcon').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('show');
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('show');
+    });
+  });
+
+  // ===== RESUME MODAL =====
+  document.getElementById('viewResumeBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    // Replace the URL below with your actual resume PDF link
+    document.getElementById('resumeFrame').src = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    document.getElementById('resumeModal').style.display = 'flex';
+  });
+
+  function closeResumeModal() {
+    document.getElementById('resumeModal').style.display = 'none';
+    document.getElementById('resumeFrame').src = '';
+  }
+
+  window.onclick = function(e) {
+    if (e.target === document.getElementById('resumeModal')) closeResumeModal();
+  };
+
+  document.getElementById('downloadPortfolioPDF').addEventListener('click', () => {
+    window.print();
+  });
+
+  // ===== CONTACT FORM (Web3Forms) =====
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const name = document.getElementById('contactName').value;
+    btn.textContent = 'Sending... ⏳';
+    btn.disabled = true;
+    const formData = new FormData(e.target);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`💖 Thank you ${name}! Your message has been sent. I will reply soon.`);
+        e.target.reset();
+      } else {
+        alert('❌ Something went wrong. Please try again or contact via WhatsApp.');
+      }
+    } catch (err) {
+      alert('❌ Network error. Please check your connection and try again.');
+    }
+    btn.textContent = 'Send Message 💌';
+    btn.disabled = false;
+  });
+
+  // ===== SHARE FUNCTIONS =====
+  function shareProject(name) {
+    window.open(`https://wa.me/?text=Check out the "${name}" project by Maira Memon! 💖`, '_blank');
+  }
+  function shareOnLinkedInProject(name) {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(location.href)}`, '_blank');
+  }
+  function shareOnLinkedIn() { shareOnLinkedInProject('Portfolio'); }
+  function shareOnTwitter() {
+    window.open(`https://twitter.com/intent/tweet?text=Check out Maira Memon's amazing portfolio! 💖 ${location.href}`, '_blank');
+  }
+  function shareOnWhatsApp() { shareProject('Maira Memon Portfolio'); }
+
+  // ===== NEWSLETTER =====
+  function subscribeNews() {
+    const em = document.getElementById('newsEmail').value;
+    if (em && em.includes('@')) {
+      alert(`📧 Subscribed with ${em}! Thank you 💖`);
+      document.getElementById('newsEmail').value = '';
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  }
+
+  // ===== FOOTER YEAR =====
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
